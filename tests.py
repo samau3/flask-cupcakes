@@ -152,6 +152,8 @@ class CupcakeViewsTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
 
             data = resp.json
-            self.assertEqual(data, f"deleted: {self.cupcake.id}")
+            self.assertEqual(data, {"deleted": self.cupcake.id})
 
             self.assertEqual(Cupcake.query.count(), 0)
+
+   # add additional tests for invalid ids

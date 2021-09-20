@@ -75,7 +75,7 @@ def modify_cupcake(cupcake_id):
     cupcake = Cupcake.query.get_or_404(cupcake_id)
     resp = request.json
 
-    if (resp.get("flavor")):
+    if (resp.get("flavor")):  # checking for truthy; check if this key is in the object
         cupcake.flavor = resp["flavor"]
     if (resp.get("size")):
         cupcake.size = resp["size"]
@@ -99,4 +99,4 @@ def delete_cupcakes(cupcake_id):
     db.session.delete(cupcake)
     db.session.commit()
 
-    return (jsonify(f"deleted: {cupcake_id}"))
+    return {"deleted": cupcake_id}
