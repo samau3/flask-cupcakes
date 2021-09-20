@@ -100,3 +100,10 @@ def delete_cupcakes(cupcake_id):
     db.session.commit()
 
     return {"deleted": cupcake_id}
+
+
+@app.get("/")
+def load_home():
+    """Load and render homepage"""
+    cupcakes = Cupcake.query.all()
+    return render_template("cupcake.html", cupcakes=cupcakes)
