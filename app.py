@@ -1,8 +1,8 @@
 """Flask app for Cupcakes"""
-from flask_debugtoolbar import DebugToolbarExtension
 from flask import Flask, flash, redirect, render_template, request, jsonify
 
-from models import db, connect_db, Cupcake #separate external and internal imports
+# separate external and internal imports
+from models import db, connect_db, Cupcake
 
 
 app = Flask(__name__)
@@ -15,7 +15,7 @@ connect_db(app)
 
 app.config['SECRET_KEY'] = "MY_SECRET"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-debug = DebugToolbarExtension(app)
+
 
 db.create_all()
 
@@ -30,7 +30,7 @@ def list_all_cupcakes():
     return jsonify(cupcakes=serialized)
 
 
-@app.get("/api/cupcakes/<cupcake_id>")
+@app.get("/api/cupcakes/<int:cupcake_id>")
 def list_single_cupcake(cupcake_id):
     """Return JSON {cupcake: {id, flavor, size, rating, image}}"""
 
@@ -63,3 +63,40 @@ def create_cupcake():
     serialized = new_cupcake.serialize()
 
     return (jsonify(cupcake=serialized), 201)
+
+
+@app.patch("/api/cupcakes/<int:cupcake_id>")
+def modify_cupcake(cupcake_id):
+    """Update cupcake
+
+    Respond with JSON {cupcake: {id, flavor, size, rating, image}}
+    """
+
+    cupcake = Cupcake.query.get_or_404(cupcake_id)
+    resp = request.json
+
+    if (resp.get("flavor")):
+        cupcake.flavor = resp["flavor"]
+    if (resp.get("size")):
+        cupcake.size = resp["size"]
+    if (resp.get("rating")):
+        cupcake.rating = resp["rating"]
+    if (resp.get("image")):
+        cupcake.image = resp["image"]
+
+    db.session.commit()
+
+    serialized = cupcake.serialize()
+
+    return (jsonify(cupcake=serialized))
+
+
+@app.delete("/api/cupcakes/<int:cupcake_id>")
+def delete_cupcakes(cupcake_id):
+    """Delete cupcakes and respond with {deleted: [cupcake-id]}"""
+
+    cupcake = Cupcake.query.get_or_404(cupcake_id)
+    db.session.delete(cupcake)
+    db.session.commit()
+
+    return (jsonify(f"deleted: {cupcake_id}"))
