@@ -1,6 +1,9 @@
 """Models for Cupcake app."""
 from flask_sqlalchemy import SQLAlchemy
 
+
+DEFAULT_IMG_URL = "https://tinyurl.com/demo-cupcake"
+
 db = SQLAlchemy()
 
 
@@ -14,7 +17,7 @@ class Cupcake(db.Model):
     size = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     image = db.Column(db.Text, nullable=False,
-                      default="https://tinyurl.com/demo-cupcake")
+                      default=DEFAULT_IMG_URL)  # make a constant instead
 
     def serialize(self):
         """Serialize to dictionary"""
