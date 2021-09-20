@@ -75,13 +75,13 @@ def modify_cupcake(cupcake_id):
     cupcake = Cupcake.query.get_or_404(cupcake_id)
     resp = request.json
 
-    if (resp.get("flavor")):  # checking for truthy; check if this key is in the object
+    if ("flavor" in resp):
         cupcake.flavor = resp["flavor"]
-    if (resp.get("size")):
+    if ("size" in resp):
         cupcake.size = resp["size"]
-    if (resp.get("rating")):
+    if ("rating" in resp):
         cupcake.rating = resp["rating"]
-    if (resp.get("image")):
+    if ("image" in resp):
         cupcake.image = resp["image"]
 
     db.session.commit()

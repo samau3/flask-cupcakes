@@ -144,6 +144,13 @@ class CupcakeViewsTestCase(TestCase):
                 }
             })
 
+    def test_patch_invalid_cupcake(self):
+        with app.test_client() as client:
+            url = f"/api/cupcakes/-1"
+            resp = client.patch(url, json={})
+
+            self.assertEqual(resp.status_code, 404)
+
     def test_delete_cupcake(self):
         with app.test_client() as client:
             url = f"/api/cupcakes/{self.cupcake.id}"
@@ -156,4 +163,9 @@ class CupcakeViewsTestCase(TestCase):
 
             self.assertEqual(Cupcake.query.count(), 0)
 
-   # add additional tests for invalid ids
+    def test_delete_invalid_cupcake(self):
+        with app.test_client() as client:
+            url = f"/api/cupcakes/-1"
+            resp = client.delete(url)
+
+            self.assertEqual(resp.status_code, 404)
