@@ -13,7 +13,7 @@ async function addCupcake(evt) {
     const image = $('#image').val();
     const rating = $('#rating').val();
 
-    console.log('Function is running')
+    // console.log('Function is running')
     const response = await axios.post(BASE_URL,
         {
             flavor,
@@ -21,8 +21,8 @@ async function addCupcake(evt) {
             image,
             rating
         });
-    console.log('added cupcake')
-    console.log(response)
+    // console.log('added cupcake')
+    // console.log(response)
 
 }
 
